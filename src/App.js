@@ -2,6 +2,7 @@
 import './App.scss';
 import Nav from './components/Navigation/Nav';
 import Login from './components/Login/Login';
+import Register from './components/Register/Register';
 
 import React from "react";
 import {
@@ -14,7 +15,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
-        <Nav />
+        {/* <Nav /> */}
         <Switch>
           <Route path="/news">
             News
@@ -27,6 +28,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
           </Route>
           <Route path="/" exact>
             Home
