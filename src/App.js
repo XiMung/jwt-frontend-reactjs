@@ -1,6 +1,6 @@
 
 import './App.scss';
-import Nav from './components/Navigation/Nav';
+// import Nav from './components/Navigation/Nav';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 
