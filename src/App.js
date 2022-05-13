@@ -3,6 +3,7 @@ import './App.scss';
 // import Nav from './components/Navigation/Nav';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
+import { ToastContainer } from 'react-toastify';
 
 import React from "react";
 import {
@@ -40,6 +41,19 @@ function App() {
           </Route>
         </Switch>
       </div>
+
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+
     </Router>
   );
 }

@@ -3,6 +3,8 @@ import './Register.scss';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = (props) => {
     const [email, setEmail] = useState("");
@@ -17,9 +19,53 @@ const Register = (props) => {
     }
 
     const handleRegister = () => {
-        alert('Register')
+        let check = isValidInputs()
         let userData = { email, phone, username, password, confirmPassword };
         console.log(userData);
+    }
+
+    const isValidInputs = () => {
+        if (!email) {
+            toast.error("Email is required.")
+            return false;
+        } else {
+            let re = /\S+@\S+\.\S+/;
+            if (!re.test(email)) {
+                toast.error("Please enter a valid email address.")
+                return false;
+            }
+        }
+
+
+        if (!phone) {
+            toast.error("Phone is required.")
+            return false;
+        } else {
+            let regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+            if (!regex.test(phone)) {
+                toast.error("Please enter ten numbers for phone.")
+                return false;
+            }
+        }
+        if (!username) {
+            toast.error("Username is required.")
+            return false;
+        }
+        if (!password) {
+            toast.error("Password is required.")
+            return false;
+        }
+        if (!confirmPassword) {
+            toast.error("Confirm Password is required.")
+            return false;
+        }
+
+        if (password != confirmPassword) {
+            toast.error("Password and Confirm Password are not the same.")
+            return false;
+        }
+
+        return true;
     }
 
     useEffect(() => {
