@@ -1,11 +1,53 @@
 
 import './Login.scss';
 import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { login } from '../../services/userServices'
 
 const Login = (props) => {
+    const [valueLogin, setValueLogin] = useState("");
+    const [password, setPassword] = useState("");
+
+    const defaultValidInput = {
+        isValidLogin: true,
+        isValidPassword: true,
+    }
+    const [isCheckInput, setIsCheckInput] = useState(defaultValidInput);
+
+
     let history = useHistory()
     const handleCreateNewAccount = () => {
         history.push('./register')
+    }
+
+    const handleLogin = async () => {
+        setIsCheckInput(defaultValidInput);
+        if (!valueLogin) {
+            toast.error("Please enter email address or your phone number")
+            setIsCheckInput({ ...defaultValidInput, isValidLogin: false })
+            return;
+        }
+        if (!password) {
+            toast.error("Please enter your password")
+            setIsCheckInput({ ...defaultValidInput, isValidPassword: false })
+            return;
+        }
+
+        let response = await login(valueLogin, password)
+        if (+response.data.EC === 0) {
+            toast.success(response.data.EM)
+
+            let data = {
+                isAuthenticated: true,
+                token: "fake token"
+            }
+
+            sessionStorage.setItem('account', JSON.stringify(data));
+            history.push('/users')
+        } else {
+            toast.error(response.data.EM)
+        }
     }
 
     return (
@@ -24,9 +66,27 @@ const Login = (props) => {
                         <div className="brand d-sm-none">
                             QUANG HIEU
                         </div>
-                        <input className='form-control' type="text" placeholder='Email address or phone number' />
-                        <input className='form-control' type="password" placeholder='Password' />
-                        <button className='btn btn-primary' type="button">Login</button>
+                        <input
+                            className={isCheckInput.isValidLogin ? 'form-control' : 'form-control is-invalid'}
+                            type="text"
+                            placeholder='Email address or phone number'
+                            value={valueLogin}
+                            onChange={(event) => { setValueLogin(event.target.value) }}
+                        />
+                        <input
+                            className={isCheckInput.isValidPassword ? 'form-control' : 'form-control is-invalid'}
+                            type="password"
+                            placeholder='Password'
+                            value={password}
+                            onChange={(event) => { setPassword(event.target.value) }}
+                        />
+                        <button
+                            className='btn btn-primary'
+                            type="button"
+                            onClick={() => handleLogin()}
+                        >
+                            Login
+                        </button>
                         <span className='text-center'>
                             <a className='forgot-password' href="#">forgot your password ?</a>
                         </span>
